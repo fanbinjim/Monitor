@@ -31,6 +31,12 @@ private slots:
 
     void on_rx_hex_clicked();
 
+    void on_clearButton_clicked();
+
+    void on_tx_ascii_clicked();
+
+    void on_tx_hex_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

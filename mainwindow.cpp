@@ -69,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->rx_ascii->setChecked(true);
     ui->rx_hex->setChecked(false);
+    ui->tx_ascii->setChecked(true);
+    ui->tx_hex->setChecked(false);
 
 
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
@@ -83,22 +85,49 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+char hexBase[16] = {'0','1','2','3',
+                     '4','5','6','7',
+                     '8','9','A','B',
+                     'C','D','E','F'};
+
+QString intoh(int n)
+{
+    QString str;
+    //str.append("0x");
+    str.append(hexBase[n/16]);
+    str.append(hexBase[n%16]);
+    return str;
+}
+
 void MainWindow::showRxData(QByteArray rxData)
 {
-    if(ui->rx_ascii->isChecked())
+    if(ui->tab->isVisible() && ui->isShowRxData->isChecked())
     {
-        ui->showData->appendPlainText(QString(rxData));
-    }
-    else if(ui->rx_hex->isChecked())
-    {
-        //ui->showData->appendPlainText(rxData.toHex().data());
+        ui->showData->moveCursor(QTextCursor::End);
 
-        QByteArray hexData = rxData.toHex();
-        QString str;
-        for(int i = 0; i < rxData.size(); i++)
+        if(ui->rx_ascii->isChecked())
         {
-            str.append("0x");
+            if(ui->isAutoReturnLine->isChecked())
+                ui->showData->appendPlainText(QString(rxData));
+            else
+                ui->showData->insertPlainText(QString(rxData));
         }
+        else if(ui->rx_hex->isChecked())
+        {
+            QString str;
+            for(int i = 0; i < rxData.size(); i++)
+            {
+                str.append(intoh(rxData[i]));
+                str.append(" ");
+            }
+
+            if(ui->isAutoReturnLine->isChecked())
+                ui->showData->appendPlainText(str);
+            else
+                ui->showData->insertPlainText(str);
+        }
+
+        ui->showData->moveCursor(QTextCursor::End);
     }
 }
 
@@ -172,5 +201,34 @@ void MainWindow::on_rx_hex_clicked()
     else
     {
         ui->rx_ascii->setChecked(true);
+    }
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    ui->showData->clear();
+}
+
+void MainWindow::on_tx_ascii_clicked()
+{
+    if(ui->tx_ascii->isChecked())
+    {
+        ui->tx_hex->setChecked(false);
+    }
+    else
+    {
+        ui->tx_hex->setChecked(true);
+    }
+}
+
+void MainWindow::on_tx_hex_clicked()
+{
+    if(ui->tx_hex->isChecked())
+    {
+        ui->tx_ascii->setChecked(false);
+    }
+    else
+    {
+        ui->tx_ascii->setChecked(true);
     }
 }
