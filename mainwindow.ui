@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -162,7 +162,7 @@
        </property>
       </widget>
      </widget>
-     <widget class="QPlainTextEdit" name="plainTextEdit">
+     <widget class="QPlainTextEdit" name="tx_data">
       <property name="geometry">
        <rect>
         <x>770</x>
@@ -228,7 +228,7 @@
         <rect>
          <x>10</x>
          <y>100</y>
-         <width>71</width>
+         <width>61</width>
          <height>22</height>
         </rect>
        </property>
@@ -244,7 +244,7 @@
         <rect>
          <x>10</x>
          <y>130</y>
-         <width>75</width>
+         <width>61</width>
          <height>23</height>
         </rect>
        </property>
@@ -265,6 +265,45 @@
         <string>ms</string>
        </property>
       </widget>
+      <widget class="QRadioButton" name="tx_decimal">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Decimal</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="tx_binary">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>50</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Binary</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="clearTxData">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>130</y>
+         <width>61</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>清空发送</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -281,6 +320,69 @@
      <attribute name="title">
       <string>数据存储</string>
      </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>控制器</string>
+     </attribute>
+     <widget class="QTextEdit" name="gamepadText">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>331</width>
+        <height>601</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="sendGamePad">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>10</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>发送手柄数据</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="intervalGamepad">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="value">
+       <number>20</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>16</y>
+        <width>54</width>
+        <height>12</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ms</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QComboBox" name="portNameBox">

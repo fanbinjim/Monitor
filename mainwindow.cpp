@@ -5,7 +5,7 @@
 #include <QProxyStyle>
 #include <QGraphicsWidget>
 #include <QMessageBox>
-
+#include <QtGamepad/QtGamepad>
 
 
 
@@ -58,6 +58,28 @@ public:
 };
 
 
+void MainWindow::initGamepad()
+{
+    connect(QGamepadManager::instance(), &QGamepadManager::connectedGamepadsChanged, this,
+        []() { qDebug() << "connected gamepads changed:"; });
+    connect(QGamepadManager::instance(), &QGamepadManager::gamepadConnected, this,
+        [](int deviceId) { qDebug() << "gamepad connected:" << deviceId; });
+    connect(QGamepadManager::instance(), &QGamepadManager::gamepadDisconnected, this,
+        [](int deviceId) { qDebug() << "gamepad disconnected:" << deviceId; });
+    connect(QGamepadManager::instance(), &QGamepadManager::gamepadButtonPressEvent, this,
+        [](int deviceId, QGamepadManager::GamepadButton button, double value) { qDebug() << "button press event:" << deviceId << button << value; });
+    connect(QGamepadManager::instance(), &QGamepadManager::gamepadButtonReleaseEvent, this,
+        [](int deviceId, QGamepadManager::GamepadButton button) { qDebug() << "button release event:" << deviceId << button; });
+    connect(QGamepadManager::instance(), &QGamepadManager::gamepadAxisEvent, this,
+        [](int deviceId, QGamepadManager::GamepadAxis axis, double value) { qDebug() << "axis event:" << deviceId << axis << value; });
+    connect(QGamepadManager::instance(), &QGamepadManager::buttonConfigured, this,
+        [](int deviceId, QGamepadManager::GamepadButton button) { qDebug() << "button configured:" << deviceId << button; });
+    connect(QGamepadManager::instance(), &QGamepadManager::axisConfigured, this,
+        [](int deviceId, QGamepadManager::GamepadAxis axis) { qDebug() << "axis configured:" << deviceId << axis; });
+    connect(QGamepadManager::instance(), &QGamepadManager::configurationCanceled, this,
+        [](int deviceId) { qDebug() << "configuration canceled:" << deviceId; });
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -72,11 +94,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tx_ascii->setChecked(true);
     ui->tx_hex->setChecked(false);
 
-
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
         ui->portNameBox->addItem(info.portName());
     }
 
+    initGamepad();
 
 }
 
@@ -97,6 +119,54 @@ QString intoh(int n)
     str.append(hexBase[n/16]);
     str.append(hexBase[n%16]);
     return str;
+}
+int htoint(QString str)
+{
+    int result = 0;
+    for(int i = 0; i < str.length(); i ++)
+    {
+        result *= 16;
+
+        if(str[i] >= '0' && str[i] <= '9')
+            result += str[i].toLatin1() - '0';
+        else if(str[i] >= 'a' && str[i] <= 'f')
+            result += str[i].toLatin1() - 'a';
+        else if(str[i] >= 'A' && str[i] <= 'F')
+            result += str[i].toLatin1() - 'A' + 10;
+    }
+    if(result > 255)
+        result = 255;
+    return result;
+}
+
+int dtoint(QString str)
+{
+    int result = 0;
+    for(int i = 0; i < str.length(); i ++)
+    {
+        result *= 10;
+        if(str[i] >= '0' && str[i] <= '9')
+            result += str[i].toLatin1() - '0';
+        else
+            break;
+    }
+    if(result > 255)
+        result = 255;
+    return result;
+}
+
+int btoint(QString str)
+{
+    int result = 0;
+    for(int i = 0; i < str.length(); i ++)
+    {
+        result *= 2;
+        if(str[i] >= '0' && str[i] <= '1')
+            result += str[i].toLatin1() - '0';
+    }
+    if(result >= 255)
+        result = 255;
+    return result;
 }
 
 void MainWindow::showRxData(QByteArray rxData)
@@ -230,5 +300,133 @@ void MainWindow::on_tx_hex_clicked()
     else
     {
         ui->tx_ascii->setChecked(true);
+    }
+}
+
+void MainWindow::on_sendData_clicked()
+{
+    QByteArray tx_data_array;
+
+    if(ui->tab->isVisible())
+    {
+        QStringList strList;
+        if(ui->tx_ascii->isChecked())
+        {
+            tx_data_array = ui->tx_data->toPlainText().toUtf8();
+        }
+        else if(ui->tx_hex->isChecked())
+        {
+            tx_data_array.clear();
+
+            strList = ui->tx_data->toPlainText().split(" ");
+            uint8_t number = 0;
+            foreach( QString str, strList)
+            {
+                number = htoint(str);
+                tx_data_array.append(number);
+            }
+        }
+        else if(ui->tx_decimal->isChecked())
+        {
+            tx_data_array.clear();
+            strList = ui->tx_data->toPlainText().split(" ");
+            uint8_t number = 0;
+            foreach( QString str, strList)
+            {
+                number = dtoint(str);
+                tx_data_array.append(number);
+            }
+        }
+        else if(ui->tx_binary->isChecked())
+        {
+            tx_data_array.clear();
+            strList = ui->tx_data->toPlainText().split(" ");
+            uint8_t number = 0;
+            foreach (QString str, strList) {
+                number = btoint(str);
+                tx_data_array.append(number);
+            }
+        }
+    }
+    if(ui->isShowTxData->isChecked())
+    {
+        ui->showData->appendPlainText(ui->tx_data->toPlainText());
+    }
+    serialPort.write(tx_data_array);
+}
+
+
+
+
+
+
+
+
+
+void MainWindow::on_clearTxData_clicked()
+{
+    ui->tx_data->clear();
+}
+
+
+
+void MainWindow::on_isSendGamepad_clicked()
+{
+    if(ui->connect->isChecked())
+    {
+
+            gamepadTimer = new QTimer(this);
+            connect(gamepadTimer, SIGNAL(timeout()), this, SLOT(sendGamepad()));
+            gamepadTimer->start(20);
+
+    }
+    else
+    {
+        ui->statusBar->showMessage("请先打开串口");
+    }
+
+}
+
+void MainWindow::sendGamepad()
+{
+    static qint64 count = 0;
+    if(ui->connect->isChecked())
+    {
+        qDebug()<<count ++;
+    }
+    else
+    {
+        ui->sendGamePad->setChecked(false);
+        gamepadTimer->stop();
+    }
+
+}
+
+void MainWindow::on_sendGamePad_clicked()
+{
+    if(ui->connect->isChecked())
+    {
+        if(ui->sendGamePad->isChecked())
+        {
+            gamepadTimer = new QTimer(this);
+            connect(gamepadTimer, SIGNAL(timeout()), this, SLOT(sendGamepad()));
+            gamepadTimer->start(ui->intervalGamepad->value());
+        }
+        else
+        {
+            gamepadTimer->stop();
+        }
+    }
+    else
+    {
+        ui->statusBar->showMessage("请先打开串口");
+    }
+}
+
+void MainWindow::on_intervalGamepad_editingFinished()
+{
+    if(ui->sendGamePad->isChecked())
+    {
+        gamepadTimer->setInterval(ui->intervalGamepad->value());
     }
 }
