@@ -56,6 +56,14 @@ private slots:
 
     void on_intervalGamepad_editingFinished();
 
+    void connectStatusChanged();
+    void connectDevice(int deviceId);
+    void disconnectDevice(int deviceId);
+    void axisDataChange(int deviceId, QGamepadManager::GamepadAxis axis, double value);
+    void buttonPress(int deviceId, QGamepadManager::GamepadButton button, double value);
+    void buttonRelease(int deviceId, QGamepadManager::GamepadButton button);
+
+
 private:
     Ui::MainWindow *ui;
 };

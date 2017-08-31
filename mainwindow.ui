@@ -330,7 +330,7 @@
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>331</width>
+        <width>461</width>
         <height>601</height>
        </rect>
       </property>
@@ -381,6 +381,41 @@
       </property>
       <property name="text">
        <string>ms</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="horizontalSlider">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>70</y>
+        <width>160</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="verticalSlider">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>120</y>
+        <width>22</width>
+        <height>160</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-100</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
