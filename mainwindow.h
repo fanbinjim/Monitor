@@ -59,10 +59,26 @@ private slots:
     void connectStatusChanged();
     void connectDevice(int deviceId);
     void disconnectDevice(int deviceId);
-    void axisDataChange(int deviceId, QGamepadManager::GamepadAxis axis, double value);
-    void buttonPress(int deviceId, QGamepadManager::GamepadButton button, double value);
-    void buttonRelease(int deviceId, QGamepadManager::GamepadButton button);
-
+    void axisLeftXShow(double value);
+    void axisLeftYShow(double value);
+    void axisRightXShow(double value);
+    void axisRightYShow(double value);
+//    void buttonAShow(bool value);
+//    void buttonBShow(bool value);
+//    void buttonXShow(bool value);
+//    void buttonYShow(bool value);
+    void buttonL1Show(bool value);
+//    void buttonR1Show(bool value);
+    void buttonL2Show(double value);
+//    void buttonR2Show(double value);
+//    void buttonSelectShow(bool value);
+//    void buttonStartShow(bool value);
+//    void buttonL3Show(bool value);
+//    void buttonR3Show(bool value);
+    void buttonUpShow(bool value);
+    void buttonDownShow(bool value);
+    void buttonLeftShow(bool value);
+    void buttonRightShow(bool value);
 
 private:
     Ui::MainWindow *ui;

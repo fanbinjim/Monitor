@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     initGamepad();
-
+    ui->tab_5->setBackgroundRole(QPalette::ColorRole::Dark);
 }
 
 MainWindow::~MainWindow()
@@ -390,9 +390,17 @@ void MainWindow::on_sendGamePad_clicked()
     {
         if(ui->sendGamePad->isChecked())
         {
-            gamepadTimer = new QTimer(this);
-            connect(gamepadTimer, SIGNAL(timeout()), this, SLOT(sendGamepad()));
-            gamepadTimer->start(ui->intervalGamepad->value());
+            if(gamepad->isConnected())
+            {
+                gamepadTimer = new QTimer(this);
+                connect(gamepadTimer, SIGNAL(timeout()), this, SLOT(sendGamepad()));
+                gamepadTimer->start(ui->intervalGamepad->value());
+            }
+            else
+            {
+                ui->statusBar->showMessage("没有可用的手柄");
+                ui->sendGamePad->setChecked(false);
+            }
         }
         else
         {
@@ -419,45 +427,6 @@ void MainWindow::initGamepad()
     connect(QGamepadManager::instance(), SIGNAL(connectedGamepadsChanged()), this, SLOT(connectStatusChanged()));
     connect(QGamepadManager::instance(), SIGNAL(gamepadConnected(int)), this, SLOT(connectDevice(int)));
     connect(QGamepadManager::instance(), SIGNAL(gamepadDisconnected(int)), this, SLOT(disconnectDevice(int)));
-    connect(QGamepadManager::instance(), SIGNAL(gamepadAxisEvent(int,QGamepadManager::GamepadAxis,double)), this, SLOT(axisDataChange(int,QGamepadManager::GamepadAxis,double)));
-    connect(QGamepadManager::instance(), SIGNAL(gamepadButtonPressEvent(int,QGamepadManager::GamepadButton,double)), this, SLOT(buttonPress(int,QGamepadManager::GamepadButton,double)));
-    connect(QGamepadManager::instance(), SIGNAL(gamepadButtonReleaseEvent(int,QGamepadManager::GamepadButton)), this, SLOT(buttonRelease(int,QGamepadManager::GamepadButton)));
-
-
-//    connect(QGamepadManager::instance(), &QGamepadManager::gamepadConnected, this,
-//        [](int deviceId) { qDebug() << "gamepad connected:" << deviceId; });
-
-
-//    connect(QGamepadManager::instance(), &QGamepadManager::gamepadDisconnected, this,
-//        [](int deviceId) { qDebug() << "gamepad disconnected:" << deviceId; });
-
-
-//    connect(QGamepadManager::instance(), &QGamepadManager::gamepadButtonPressEvent, this,
-//        [](int deviceId, QGamepadManager::GamepadButton button, double value) { qDebug() << "button press event:" << deviceId << button << value; });
-
-
-//    connect(QGamepadManager::instance(), &QGamepadManager::gamepadButtonReleaseEvent, this,
-//        [](int deviceId, QGamepadManager::GamepadButton button) { qDebug() << "button release event:" << deviceId << button; });
-
-
-//    connect(QGamepadManager::instance(), &QGamepadManager::gamepadAxisEvent, this,
-//        [](int deviceId, QGamepadManager::GamepadAxis axis, double value) {
-//        qDebug() << "axis event:" << deviceId << axis << value;
-
-
-//    });
-
-
-    connect(QGamepadManager::instance(), &QGamepadManager::buttonConfigured, this,
-        [](int deviceId, QGamepadManager::GamepadButton button) { qDebug() << "button configured:" << deviceId << button; });
-
-
-    connect(QGamepadManager::instance(), &QGamepadManager::axisConfigured, this,
-        [](int deviceId, QGamepadManager::GamepadAxis axis) { qDebug() << "axis configured:" << deviceId << axis; });
-
-
-    connect(QGamepadManager::instance(), &QGamepadManager::configurationCanceled, this,
-        [](int deviceId) { qDebug() << "configuration canceled:" << deviceId; });
 }
 
 
@@ -471,6 +440,22 @@ void MainWindow::connectDevice(int deviceId)
     QString str = "gamepad connected:";
     str.append(QString::number(deviceId));
     ui->gamepadText->append(str);
+
+    if(!gamepad)
+    {
+        gamepad = new QGamepad(deviceId);
+
+        connect(gamepad,SIGNAL(axisLeftXChanged(double)), this, SLOT(axisLeftXShow(double)));
+        connect(gamepad,SIGNAL(axisLeftYChanged(double)), this, SLOT(axisLeftYShow(double)));
+        connect(gamepad,SIGNAL(axisRightXChanged(double)), this, SLOT(axisRightXShow(double)));
+        connect(gamepad,SIGNAL(axisRightYChanged(double)), this, SLOT(axisRightYShow(double)));
+        connect(gamepad,SIGNAL(buttonUpChanged(bool)), this, SLOT(buttonUpShow(bool)));
+        connect(gamepad,SIGNAL(buttonDownChanged(bool)), this, SLOT(buttonDownShow(bool)));
+        connect(gamepad,SIGNAL(buttonLeftChanged(bool)), this, SLOT(buttonLeftShow(bool)));
+        connect(gamepad,SIGNAL(buttonRightChanged(bool)), this, SLOT(buttonRightShow(bool)));
+        connect(gamepad, SIGNAL(buttonL1Changed(bool)), this, SLOT(buttonL1Show(bool)));
+        connect(gamepad, SIGNAL(buttonL2Changed(double)), this, SLOT(buttonL2Show(double)));
+    }
 }
 
 void MainWindow::disconnectDevice(int deviceId)
@@ -478,44 +463,56 @@ void MainWindow::disconnectDevice(int deviceId)
     QString str = "gamepad disconnected:";
     str.append(QString::number(deviceId));
     ui->gamepadText->append(str);
+    if(gamepad)
+        delete gamepad;
 }
 
-void MainWindow::axisDataChange(int deviceId, QGamepadManager::GamepadAxis axis, double value)
+void MainWindow::axisLeftXShow(double value)
 {
-    QString str = "axis data change: ";
-    str.append("deviceId:");
-    str.append(QString::number(deviceId));
-    str.append(" axis:");
-    str.append(QString::number(axis));
-    str.append(" value:");
-    str.append(QString::number(value));
-    ui->gamepadText->append(str);
-
-    if(axis == QGamepadManager::GamepadAxis::AxisLeftY)
-    {
-        ui->verticalSlider->setValue(value*100);
-    }
-
+    ui->le_l_axis_x->setText(QString::number(value));
 }
 
-void MainWindow::buttonPress(int deviceId, QGamepadManager::GamepadButton button, double value)
+void MainWindow::axisLeftYShow(double value)
 {
-    QString str = "button press: ";
-    str.append("deviceId:");
-    str.append(QString::number(deviceId));
-    str.append(" button");
-    str.append(QString::number(button));
-    str.append(" value:");
-    str.append(QString::number(value));
-    ui->gamepadText->append(str);
+    ui->le_l_axis_y->setText(QString::number(value));
 }
 
-void MainWindow::buttonRelease(int deviceId, QGamepadManager::GamepadButton button)
+void MainWindow::axisRightXShow(double value)
 {
-    QString str = "button release: ";
-    str.append("deviceId:");
-    str.append(QString::number(deviceId));
-    str.append(" button");
-    str.append(QString::number(button));
-    ui->gamepadText->append(str);
+    ui->le_r_axis_x->setText(QString::number(value));
+}
+
+void MainWindow::axisRightYShow(double value)
+{
+    ui->le_r_axis_y->setText(QString::number(value));
+}
+
+void MainWindow::buttonL1Show(bool value)
+{
+    ui->pb_l1->setChecked(value);
+}
+
+void MainWindow::buttonL2Show(double value)
+{
+    ui->vs_l2->setValue(value * 100);
+}
+
+void MainWindow::buttonUpShow(bool value)
+{
+    ui->pb_up->setChecked(value);
+}
+
+void MainWindow::buttonDownShow(bool value)
+{
+    ui->pb_down->setChecked(value);
+}
+
+void MainWindow::buttonLeftShow(bool value)
+{
+    ui->pb_left->setChecked(value);
+}
+
+void MainWindow::buttonRightShow(bool value)
+{
+    ui->pb_right->setChecked(value);
 }

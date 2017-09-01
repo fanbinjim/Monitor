@@ -2,4 +2,20 @@
     <qresource prefix="/icon">
         <file>usb.png</file>
     </qresource>
+    <qresource prefix="/image/gamepad">
+        <file>image/xboxControllerBack.png</file>
+        <file>image/xboxControllerButtonA.png</file>
+        <file>image/xboxControllerButtonB.png</file>
+        <file>image/xboxControllerButtonGuide.png</file>
+        <file>image/xboxControllerButtonX.png</file>
+        <file>image/xboxControllerButtonY.png</file>
+        <file>image/xboxControllerDPad.png</file>
+        <file>image/xboxControllerLeftShoulder.png</file>
+        <file>image/xboxControllerLeftThumbstick.png</file>
+        <file>image/xboxControllerLeftTrigger.png</file>
+        <file>image/xboxControllerRightShoulder.png</file>
+        <file>image/xboxControllerRightThumbstick.png</file>
+        <file>image/xboxControllerRightTrigger.png</file>
+        <file>image/xboxControllerStart.png</file>
+    </qresource>
 </RCC>
