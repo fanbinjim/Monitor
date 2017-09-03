@@ -321,7 +321,7 @@
       <string>数据存储</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tab_5">
+    <widget class="QWidget" name="tab_control">
      <attribute name="title">
       <string>控制器</string>
      </attribute>
@@ -335,7 +335,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="sendGamePad">
+     <widget class="QPushButton" name="pb_sendGamePadData">
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -719,7 +719,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QSlider" name="verticalSlider">
+     <widget class="QSlider" name="vs_r2">
       <property name="geometry">
        <rect>
         <x>940</x>
@@ -846,9 +846,219 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QPushButton" name="pb_r1">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>280</y>
+        <width>31</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_back">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>390</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_start">
+      <property name="geometry">
+       <rect>
+        <x>770</x>
+        <y>390</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_x">
+      <property name="geometry">
+       <rect>
+        <x>850</x>
+        <y>380</y>
+        <width>35</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_y">
+      <property name="geometry">
+       <rect>
+        <x>890</x>
+        <y>340</y>
+        <width>35</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_b">
+      <property name="geometry">
+       <rect>
+        <x>930</x>
+        <y>380</y>
+        <width>35</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_a">
+      <property name="geometry">
+       <rect>
+        <x>890</x>
+        <y>420</y>
+        <width>35</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_l3">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>380</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pb_r3">
+      <property name="geometry">
+       <rect>
+        <x>825</x>
+        <y>489</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_mask">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>130</y>
+        <width>521</width>
+        <height>481</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_l_axis">
+      <property name="geometry">
+       <rect>
+        <x>517</x>
+        <y>345</y>
+        <width>100</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_r_axis">
+      <property name="geometry">
+       <rect>
+        <x>792</x>
+        <y>455</y>
+        <width>100</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>gamepadCrossBack</zorder>
      <zorder>gamepadText</zorder>
-     <zorder>sendGamePad</zorder>
+     <zorder>pb_sendGamePadData</zorder>
      <zorder>intervalGamepad</zorder>
      <zorder>label_2</zorder>
      <zorder>label_3</zorder>
@@ -871,13 +1081,25 @@
      <zorder>vs_l2</zorder>
      <zorder>label_11</zorder>
      <zorder>label_12</zorder>
-     <zorder>verticalSlider</zorder>
+     <zorder>vs_r2</zorder>
      <zorder>label_13</zorder>
      <zorder>label_14</zorder>
      <zorder>label_15</zorder>
      <zorder>label_16</zorder>
      <zorder>label_17</zorder>
      <zorder>label_18</zorder>
+     <zorder>pb_r1</zorder>
+     <zorder>pb_back</zorder>
+     <zorder>pb_start</zorder>
+     <zorder>pb_x</zorder>
+     <zorder>pb_y</zorder>
+     <zorder>pb_b</zorder>
+     <zorder>pb_a</zorder>
+     <zorder>pb_l3</zorder>
+     <zorder>pb_r3</zorder>
+     <zorder>label_l_axis</zorder>
+     <zorder>label_r_axis</zorder>
+     <zorder>label_mask</zorder>
     </widget>
    </widget>
    <widget class="QComboBox" name="portNameBox">

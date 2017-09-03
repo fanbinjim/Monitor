@@ -23,6 +23,7 @@ private:
     QGamepad *gamepad;
 
     QTimer *gamepadTimer;
+    QTimer *gamepadPaintTimer;
 
     void initGamepad(void);
 
@@ -51,8 +52,7 @@ private slots:
     void on_isSendGamepad_clicked();
 
     void sendGamepad(void);
-
-    void on_sendGamePad_clicked();
+    void paintGamepad(void);
 
     void on_intervalGamepad_editingFinished();
 
@@ -63,22 +63,29 @@ private slots:
     void axisLeftYShow(double value);
     void axisRightXShow(double value);
     void axisRightYShow(double value);
-//    void buttonAShow(bool value);
-//    void buttonBShow(bool value);
-//    void buttonXShow(bool value);
-//    void buttonYShow(bool value);
+    void buttonAShow(bool value);
+    void buttonBShow(bool value);
+    void buttonXShow(bool value);
+    void buttonYShow(bool value);
     void buttonL1Show(bool value);
-//    void buttonR1Show(bool value);
+    void buttonR1Show(bool value);
     void buttonL2Show(double value);
-//    void buttonR2Show(double value);
-//    void buttonSelectShow(bool value);
-//    void buttonStartShow(bool value);
-//    void buttonL3Show(bool value);
-//    void buttonR3Show(bool value);
+    void buttonR2Show(double value);
+    void buttonSelectShow(bool value);
+    void buttonStartShow(bool value);
+    void buttonL3Show(bool value);
+    void buttonR3Show(bool value);
     void buttonUpShow(bool value);
     void buttonDownShow(bool value);
     void buttonLeftShow(bool value);
     void buttonRightShow(bool value);
+
+    void on_pb_sendGamePadData_clicked();
+
+private:
+    // gamepad
+    bool needRepaintAxis = false;
+
 
 private:
     Ui::MainWindow *ui;
