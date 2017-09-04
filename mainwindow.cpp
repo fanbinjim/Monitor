@@ -435,6 +435,24 @@ void MainWindow::initGamepad()
     connect(QGamepadManager::instance(), SIGNAL(gamepadConnected(int)), this, SLOT(connectDevice(int)));
     connect(QGamepadManager::instance(), SIGNAL(gamepadDisconnected(int)), this, SLOT(disconnectDevice(int)));
     gamepadPaintTimer = new QTimer(this);
+    QImage image(100,100, QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+
+    painter.setPen(QPen( QBrush(Qt::red), 8));
+    painter.drawPoint(50,50);
+
+    ui->label_l_axis->setPixmap(QPixmap::fromImage(image));
+
+    image.fill(Qt::transparent);
+
+    painter.drawPoint(50, 50);
+    painter.end();
+    ui->label_r_axis->setPixmap(QPixmap::fromImage(image));
+
+    qDebug()<<"init paint";
+    this->repaint();
+    needRepaintAxis = false;
 }
 
 
